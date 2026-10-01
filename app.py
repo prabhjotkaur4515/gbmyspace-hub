@@ -72,31 +72,32 @@ if not st.session_state.is_logged_in:
             "Early Childhood Education",
             "Financial Planning & Services"
         ])
-        
-     if st.button("Enter Student Hub 🚀"):
-        if input_name and input_id:
-            if input_id.endswith("@georgebrown.ca") or input_id.isdigit():
-                st.session_state.is_logged_in = True
-                st.session_state.student_name = input_name
-                st.session_state.student_id = input_id
-                st.session_state.program = input_prog
-                
-                student_tag = f"{input_name} ({input_prog[:10]}...)"
-                if student_tag not in st.session_state.online_students:
-                    st.session_state.online_students.append(student_tag)
+
+        if st.button("Enter Student Hub 🚀"):
+            if input_name and input_id:
+                if input_id.endswith("@georgebrown.ca") or input_id.isdigit():
+                    st.session_state.is_logged_in = True
+                    st.session_state.student_name = input_name
+                    st.session_state.student_id = input_id
+                    st.session_state.program = input_prog
                     
-            st.rerun()
+                    student_tag = f"{input_name} ({input_prog[:10]}...)"
+                    if student_tag not in st.session_state.online_students:
+                        st.session_state.online_students.append(student_tag)
+                        
+                    st.rerun()
+                else:
+                    st.error("Access Denied: Please use a valid @georgebrown.ca email or Student ID.")
             else:
-                st.error("Access Denied: Please use a valid @georgebrown.ca email or Student ID.")
-        else:
-            st.error("Please enter your name and student ID or email.")
+                st.error("Please enter your name and student ID or email.")
+
     with col2:
         st.info("""
-        *What Students Can Do Here:*
-        - 💬 *Live Peer Chat:* Talk directly with fellow students across courses.
-        - 📁 *File & Notes Exchange:* Upload and download study resources.
-        - 💼 *LinkedIn Directory:* Share your professional profile and network.
-        - 📅 *Attendance & Grades:* Track your academic progress.
+        What Students Can Do Here:
+        - 💬 Live Peer Chat: Talk directly with fellow students across courses.
+        - 📁 File & Notes Exchange: Upload and download study resources.
+        - 💼 LinkedIn Directory: Share your professional profile and network.
+        - 📅 Attendance & Grades: Track your academic progress.
         """)
 
     st.markdown("""
@@ -114,7 +115,7 @@ if not st.session_state.is_logged_in:
 # Sidebar Navigation
 st.sidebar.image("https://upload.wikimedia.org/wikipedia/en/thumb/4/4a/George_Brown_College_logo.svg/1200px-George_Brown_College_logo.svg.png", width=140)
 st.sidebar.markdown("---")
-st.sidebar.success(f"👤 *{st.session_state.student_name}*\n`ID: {st.session_state.student_id}\n{st.session_state.program}`")
+st.sidebar.success(f"👤 {st.session_state.student_name}\n`ID: {st.session_state.student_id}\n{st.session_state.program}`")
 
 if st.sidebar.button("🚪 Logout Hub"):
     st.session_state.is_logged_in = False
@@ -157,7 +158,7 @@ if hub_tab == "🏠 Dashboard & Active Peers":
     st.markdown("### 👥 Students Registered in This Session")
     if st.session_state.online_students:
         for student in st.session_state.online_students:
-            st.markdown(f"- 🟢 *{student}*")
+            st.markdown(f"- 🟢 {student}")
     else:
         st.write("No other students logged in yet.")
 
@@ -170,7 +171,7 @@ elif hub_tab == "💬 Student Chat Room":
     chat_container = st.container(height=350)
     with chat_container:
         for msg in st.session_state.shared_messages:
-            st.markdown(f"> *{msg['sender']}:* {msg['text']}")
+            st.markdown(f"> {msg['sender']}: {msg['text']}")
 
     st.markdown("---")
     with st.form("chat_form", clear_on_submit=True):
@@ -201,14 +202,14 @@ elif hub_tab == "📁 Shared Notes & File Vault":
                     "filename": file_name_input,
                     "description": file_desc
                 })
-                st.success(f"Successfully added *{file_name_input}* to the student vault!")
+                st.success(f"Successfully added {file_name_input} to the student vault!")
                 st.rerun()
 
     st.markdown("---")
     st.markdown("### 📚 Available Student Files")
     for file in st.session_state.shared_files:
         st.markdown(f"""
-        - 📄 *{file['filename']}* 
+        - 📄 {file['filename']} 
           Uploaded by: {file['uploader']}  
           {file['description']}
         """)
@@ -224,7 +225,6 @@ elif hub_tab == "💼 Student LinkedIn Directory":
         li_submit = st.form_submit_button("Add My LinkedIn Profile 🔗")
         
         if li_submit and li_link_input:
-            # Prevent duplicate entries for the exact same name
             st.session_state.linkedin_directory.append({
                 "name": st.session_state.student_name,
                 "program": st.session_state.program,
@@ -236,7 +236,7 @@ elif hub_tab == "💼 Student LinkedIn Directory":
     st.markdown("---")
     st.markdown("### 🌐 Classmate Directory")
     for profile in st.session_state.linkedin_directory:
-        st.markdown(f"- 👤 *{profile['name']}* ({profile['program']}) — [Visit LinkedIn Profile]({profile['link']})")
+        st.markdown(f"- 👤 {profile['name']} ({profile['program']}) — [Visit LinkedIn Profile]({profile['link']})")
 
 
 # --- 5. ATTENDANCE & TIME TABLE ---
@@ -254,24 +254,25 @@ elif hub_tab == "📝 My Grades & Results":
     st.markdown("""
     | Evaluation Item | Weight | Score Obtained | Status |
     | :--- | :--- | :--- | :--- |
-    | *Assignment 1* | 20% | 19 / 20 | Pass 🟢 |
-    | *Midterm Evaluation* | 30% | 27 / 30 | Pass 🟢 |
-    | *Project Deliverable* | 50% | Pending | In Progress 🟡 |
+    | Assignment 1 | 20% | 19 / 20 | Pass 🟢 |
+    | Midterm Evaluation | 30% | 27 / 30 | Pass 🟢 |
+    | Project Deliverable | 50% | Pending | In Progress 🟡 |
     """)
 
 
 # --- 7. COLLEGE NOTICES ---
 elif hub_tab == "📢 College Notices":
     st.subheader("📢 Student Hub Circulars & Notices")
-    st.info("📌 *Announcement:* Peer study groups and networking meetups are now organizing through the student chat room and LinkedIn directory.")
+    st.info("📌 Announcement: Peer study groups and networking meetups are now organizing through the student chat room and LinkedIn directory.")
     st.markdown("""
-    - *Library Hours:* Extended study rooms open 24/7 during exam periods.
-    - *Career Hub:* Resume review sessions available every Tuesday.
+    - Library Hours: Extended study rooms open 24/7 during exam periods.
+    - Career Hub: Resume review sessions available every Tuesday.
     """)
 
 # Footer
 st.markdown("""
     <div class="footer">
-        George Brown MySpace Hub • Student Collaboration Portal • All Rights Reserved
+        George Brown MySpace Hub • Student-to-Student Collaboration Space
     </div>
 """, unsafe_allow_html=True)
+ 
