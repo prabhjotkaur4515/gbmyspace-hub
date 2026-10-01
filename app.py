@@ -64,7 +64,7 @@ if not st.session_state.is_logged_in:
     with col1:
         st.markdown("### 🔐 Student Sign-In")
         input_name = st.text_input("Full Name:", placeholder="e.g., Prabh Maan")
-        input_id = st.text_input("George Brown Student ID or Email:", placeholder="e.g., 101683176 or student@georgebrown.ca")
+        input_id = st.text_input("George Brown Student ID or Email:", placeholder="e.g., 123456789 or student@georgebrown.ca")
         input_prog = st.selectbox("Select Program:", [
             "Post-Graduate Human Resources Management (B428)",
             "Business Administration - Leadership & Management",
