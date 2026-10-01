@@ -75,7 +75,6 @@ if not st.session_state.is_logged_in:
         
      if st.button("Enter Student Hub 🚀"):
         if input_name and input_id:
-            # Check for George Brown email domain or student ID number
             if input_id.endswith("@georgebrown.ca") or input_id.isdigit():
                 st.session_state.is_logged_in = True
                 st.session_state.student_name = input_name
@@ -86,7 +85,7 @@ if not st.session_state.is_logged_in:
                 if student_tag not in st.session_state.online_students:
                     st.session_state.online_students.append(student_tag)
                     
-                st.rerun()
+            st.rerun()
             else:
                 st.error("Access Denied: Please use a valid @georgebrown.ca email or Student ID.")
         else:
