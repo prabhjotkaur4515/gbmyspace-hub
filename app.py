@@ -73,8 +73,10 @@ if not st.session_state.is_logged_in:
             "Financial Planning & Services"
         ])
         
-        if st.button("Enter Student Hub 🚀"):
-            if input_name and input_id:
+     if st.button("Enter Student Hub 🚀"):
+        if input_name and input_id:
+            # Check for George Brown email domain or student ID number
+            if input_id.endswith("@georgebrown.ca") or input_id.isdigit():
                 st.session_state.is_logged_in = True
                 st.session_state.student_name = input_name
                 st.session_state.student_id = input_id
@@ -83,9 +85,12 @@ if not st.session_state.is_logged_in:
                 student_tag = f"{input_name} ({input_prog[:10]}...)"
                 if student_tag not in st.session_state.online_students:
                     st.session_state.online_students.append(student_tag)
+                    
                 st.rerun()
             else:
-                st.error("Please enter your name and student ID or email.")
+                st.error("Access Denied: Please use a valid @georgebrown.ca email or Student ID.")
+        else:
+            st.error("Please enter your name and student ID or email.")
     with col2:
         st.info("""
         *What Students Can Do Here:*
